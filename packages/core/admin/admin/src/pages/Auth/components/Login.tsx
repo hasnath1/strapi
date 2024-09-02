@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Box, Button, Flex, Main, Typography, Link } from '@strapi/design-system';
 import camelCase from 'lodash/camelCase';
 import { useIntl } from 'react-intl';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { Form } from '../../../components/Form';
@@ -42,7 +42,7 @@ const Login = ({ children }: LoginProps) => {
   const query = React.useMemo(() => new URLSearchParams(searchString), [searchString]);
   const navigate = useNavigate();
 
-  const { login } = useAuth('Login', (auth) => auth);
+  const { login, token } = useAuth('Login', (auth) => auth);
 
   const handleLogin = async (body: Parameters<typeof login>[0]) => {
     setApiError(undefined);
@@ -65,6 +65,10 @@ const Login = ({ children }: LoginProps) => {
       navigate(redirectUrl);
     }
   };
+
+  if (token) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <UnauthenticatedLayout>

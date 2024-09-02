@@ -1,6 +1,5 @@
 import { Navigate, useLocation, useMatch } from 'react-router-dom';
 
-import { useAuth } from '../../features/Auth';
 import { useEnterprise } from '../../hooks/useEnterprise';
 import { useInitQuery } from '../../services/admin';
 
@@ -35,8 +34,6 @@ const AuthPage = () => {
     }
   );
 
-  const { token } = useAuth('AuthPage', (auth) => auth);
-
   if (!authType || !forms) {
     return <Navigate to="/" />;
   }
@@ -45,9 +42,8 @@ const AuthPage = () => {
 
   // Redirect the user to the login page if
   // the endpoint does not exist or
-  // there is already an admin user oo
-  // the user is already logged in
-  if (!Component || (hasAdmin && authType === 'register-admin') || token) {
+  // there is already an admin user
+  if (!Component || (hasAdmin && authType === 'register-admin')) {
     return <Navigate to="/" />;
   }
 
